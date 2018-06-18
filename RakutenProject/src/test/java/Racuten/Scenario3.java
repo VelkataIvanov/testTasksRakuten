@@ -24,12 +24,15 @@ public class Scenario3 {
 	
 public void openBrowser() {
 		
-		//System.setProperty("webdriver.chrome.driver", "D:\\QAComplete\\Selenium\\Лекции\\chromedriver.exe");
-		//driver = new ChromeDriver();
+		
 		
 		driver= new FirefoxDriver();
 		driver.get("https://www.rakuten.de/");
 		driver.manage().window().maximize();
+		
+		String popUpBegin=driver.getWindowHandle();
+		WebElement popUpButtonBegin= driver.findElement(By.id("consent_prompt_submit"));
+		driver.findElement(By.id("consent_prompt_submit")).click();
 				
 	}
 
@@ -38,8 +41,8 @@ public void openBrowser() {
 		
 		//Option one with login through login link at the home page
 		
-		WebElement login= driver.findElement(By.className("tr_header_login"));
-		driver.findElement(By.className("tr_header_login")).click();
+		WebElement login= driver.findElement(By.xpath("//a[@href='/kundenkonto']"));
+		driver.findElement(By.xpath("//a[@href='/kundenkonto']")).click();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		WebElement emailAddress= driver.findElement(By.name("loginEmail"));
 		emailAddress.sendKeys("velkataivanov@gmail.com");
@@ -55,19 +58,23 @@ public void openBrowser() {
 		
 		//Option two is to login at the web site when first is picked some product, proceed to basket and go to check out the product
 		
-		WebElement product= driver.findElement(By.cssSelector("div.cp-recommended div.slide:nth-of-type(8)"));
-		driver.findElement(By.cssSelector("div.cp-recommended div.slide:nth-of-type(8)")).click();
+		WebElement product= driver.findElement(By.xpath("//a[@href='/produkt/bosch-professional-akkuschrauber-gsr-mx2drive-professional-bohrschrauber-blauschwarz-karton-2020151615']"));
+		driver.findElement(By.xpath("//a[@href='/produkt/bosch-professional-akkuschrauber-gsr-mx2drive-professional-bohrschrauber-blauschwarz-karton-2020151615']")).click();
+		
+		WebElement cardButton= driver.findElement(By.xpath("//a[@class='button add-cart -red']"));
+		driver.findElement(By.xpath("//a[@class='button add-cart -red']")).click();
+		
 		String popUp=driver.getWindowHandle();
-		WebElement cardButton= driver.findElement(By.id("cardButton"));
-		driver.findElement(By.id("cardButton")).click();
+		WebElement popUpButton= driver.findElement(By.xpath("//a[@href='/shopcart']"));
+		driver.findElement(By.xpath("//a[@href='/shopcart']")).click();
 		
-		WebElement confirmButton = new WebDriverWait(driver, 20).until(ExpectedConditions.presenceOfElementLocated(By.id("atc_b_tsc")));
-        confirmButton.click();
-		
-        WebElement submitButton= driver.findElement(By.name("go_to_checkout"));
+		WebElement message= driver.findElement(By.cssSelector("div#sidebar h2"));
+		String messageText= message.getText();
+		assertEquals("Bestellübersicht", messageText);
+		WebElement submitButton= driver.findElement(By.name("go_to_checkout"));
         driver.findElement(By.name("go_to_checkout")).click();
         driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
-        WebElement login= driver.findElement(By.cssSelector("div.field-container input#client_email"));
+        WebElement login= driver.findElement(By.name("username"));
         login.sendKeys("velkataivanov@gmail.com");
         WebElement password= driver.findElement(By.id("password"));
         password.sendKeys("Pass1234");
@@ -81,8 +88,8 @@ public void openBrowser() {
 		
 		//Option three when try to login on site through  register link at the home page
 		
-		WebElement Register= driver.findElement(By.className("tr_header_register"));
-		driver.findElement(By.className("tr_header_register")).click();
+		WebElement Register= driver.findElement(By.xpath("//a[@href='https://www.rakuten.de/kundenkonto']"));
+		driver.findElement(By.xpath("//a[@href='https://www.rakuten.de/kundenkonto']")).click();
 		
 		WebElement loginEmail= driver.findElement(By.name("loginEmail"));
 		loginEmail.sendKeys("velkataivanov@gmail.com");

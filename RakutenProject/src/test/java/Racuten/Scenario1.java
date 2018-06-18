@@ -24,25 +24,33 @@ public class Scenario1 {
     @Before
     public void openBrowser() {
     	
-    	//System.setProperty("webdriver.chrome.driver", "D:\\QAComplete\\Selenium\\Лекции\\chromedriver.exe");
-		//driver = new ChromeDriver();
+    	
+    	
         driver = new FirefoxDriver();
         driver.get("https://www.rakuten.de/");
         driver.manage().window().maximize();
+        
+        
+       	  String popUpBegin=driver.getWindowHandle();
+		  WebElement popUpButtonBegin= driver.findElement(By.id("consent_prompt_submit"));
+		  driver.findElement(By.id("consent_prompt_submit")).click();
+        
     }
     
  	@Test
     public void Scenario1()
     {
- 		WebElement homePage= driver.findElement(By.id("q"));
+ 		
+ 		
+ 		WebElement homePage= driver.findElement(By.id("search-input"));
  		homePage.sendKeys("mobile");
- 		WebElement searchButton= driver.findElement(By.className("b-sprite-icon-search"));
- 		driver.findElement(By.className("b-sprite-icon-search")).click();
- 		WebElement selectList= driver.findElement(By.id("p-amount_2442"));
- 		driver.findElement(By.id("p-amount_2442")).click();
- 		WebElement message= driver.findElement(By.id("filter-open"));
+ 		WebElement searchButton= driver.findElement(By.xpath("//button[@class='button-search']"));
+ 		driver.findElement(By.xpath("//button[@class='button-search']")).click();
+ 		WebElement selectList= driver.findElement(By.xpath("//a[@href='/produkt/stativleinwand-203-x-203-cm-bilddiagonale-ca-113-bzw-289-cm-mobile-beamer-leinwand-i-1895797099']"));
+ 		driver.findElement(By.xpath("//a[@href='/produkt/stativleinwand-203-x-203-cm-bilddiagonale-ca-113-bzw-289-cm-mobile-beamer-leinwand-i-1895797099']")).click();
+ 		WebElement message= driver.findElement(By.cssSelector("h2.title"));
  		String messageText = message.getText();
- 		assertEquals("Artikel filtern", messageText);
+ 		assertEquals("Produktbeschreibung", messageText);
  		
     }
 
